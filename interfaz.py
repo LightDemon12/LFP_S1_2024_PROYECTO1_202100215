@@ -1,50 +1,49 @@
 import tkinter as tk
 
-# Clase para crear una interfaz gráfica
 class InterfazHTML: 
-    def __init__(self, ventana, tamaño="900x450", titulo="titulo predefinido", color="white"): # Constructor
-        self.ventana = ventana # Crear ventana
-        self.ventana.geometry(tamaño) # Tamaño de la ventana
-        self.ventana.configure(background=color) # Color de fondo
-        self.ventana.title(titulo) # Título de la ventana
+    def __init__(self, ventana, tamaño="900x450", titulo="titulo predefinido", color="#C5CAF5"):
+        # Inicialización de la ventana principal
+        self.ventana = ventana 
+        self.ventana.geometry(tamaño) 
+        self.ventana.configure(background=color) 
+        self.ventana.title(titulo) 
 
-    def etiqueta(self,texto): # Método para crear etiquetas
-        tk.Label(   
-            self.ventana, # Ventana
-            text=texto, # Texto de la etiqueta
-            font=("cascadia", 12), # Fuente
-            bg="white", # Color de fondo
-            justify=tk.CENTER, # Justificación
-        ).pack(
-            fill=tk.BOTH, # Rellenar
+    def etiqueta(self, texto, fila, columna, columnspan=1, color_fondo="white", justificacion=tk.CENTER):
+        # Método para crear etiquetas
+        etiqueta = tk.Label(   
+            self.ventana, 
+            text=texto, 
+            font=("cascadia", 12), 
+            bg=color_fondo, 
+            justify=justificacion
         )
+        # Posicionamiento de la etiqueta en la ventana
+        etiqueta.grid(row=fila, column=columna, columnspan=columnspan, padx=10, pady=10)
 
-    def boton(self, texto, comando):
-        tk.Button(
+    def boton(self, texto, comando, fila, columna, columnspan=1):
+        # Método para crear botones
+        boton = tk.Button(
             self.ventana, 
             text=texto,
             font=("Cascadia  Code", 12), 
-            bg="#A9F5F2", 
-            fg="black", # Color de letra
-            command=comando,  # Comando del botón
-            relief="flat",  # Relieve 
-        ).pack(
-            fill=tk.BOTH,
+            bg="#7382F5", 
+            fg="black", 
+            command=comando, 
+            relief="flat",  
         )
+        # Posicionamiento del botón en la ventana
+        boton.grid(row=fila, column=columna, columnspan=columnspan, padx=10, pady=10)
 
-    def caja_texto(self):    # Método para crear caja de texto
+    def caja_texto(self, fila, columna, rowspan=1, columnspan=1):
+        # Método para crear cajas de texto
         caja = tk.Text(  
             master=self.ventana,
-            wrap="word", # Ajuste de texto
+            wrap="word", 
             height=10,
             width=40,
-            state="disabled", # Estado de la caja
             fg="red", 
             bg="white", 
-            
         )
-        caja.pack(
-            fill=tk.BOTH,
-        )
-        return caja # Retornar caja de texto para su uso posterior
-        
+        # Posicionamiento de la caja de texto en la ventana
+        caja.grid(row=fila, column=columna, rowspan=rowspan, columnspan=columnspan, padx=10, pady=10)
+        return caja 
