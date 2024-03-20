@@ -2,7 +2,8 @@ import tkinter as tk
 from tkinter import filedialog
 from interfaz import InterfazHTML
 import tkinter.messagebox as messagebox
-from document_handler import abrir_documento, leer_documento
+from document_handler import abrir_documento
+from analizador_lexico import leer_archivo
 # Variable global para almacenar la ruta del documento
 ruta_documento_global = ""
 
@@ -15,8 +16,8 @@ def main():
     etiqueta = interfaz.etiqueta("TRADUCTOR DE HTML", fila=0, columna=0, columnspan=4) # Crear etiqueta
     caja_texto1 = interfaz.caja_texto(fila=2, columna=0, columnspan=2, height=35, width=70) # Crear caja de texto y ajustar tamaño
     boton_carga = interfaz.boton("Cargar archivo", lambda ventana=ventana_principal, caja_texto=caja_texto1: boton_Carga(ventana, caja_texto), fila=1, columna=1)
-    boton_traduccion = interfaz.boton("Traducir", boton_Traduccion, fila=1, columna=2) # Crear botón
     caja_texto2 = interfaz.caja_texto(fila=2, columna=2, columnspan=2, height=35, width=70) # Crear caja de texto y ajustar tamaño
+    boton_traduccion = interfaz.boton("Traducir archivo", lambda ventana=ventana_principal, caja_texto=caja_texto2: boton_Traduccion(ventana, caja_texto), fila=1, columna=2)
     ventana_principal.mainloop() # Mostrar ventana
 
 
@@ -35,7 +36,12 @@ def boton_Carga(ventana_principal, caja_texto1):
                     caja_texto1.delete(1.0, tk.END)  # Limpiar la caja de texto
                     caja_texto1.insert(tk.END, ''.join(contenido))  # Insertar el contenido en la caja de texto
                     # Llamar a la función para procesar el documento después de cargarlo en la caja de texto
-                    leer_documento(ruta_documento)
+
+                    # Llamar a leer_archivo con la ruta del documento
+                    palabras = leer_archivo(ruta_documento)
+                    if palabras:
+                        for palabra, tipo, linea, columna in palabras:
+                            print(f'Palabra: {palabra}, Tipo: {tipo}, Línea: {linea}, Columna: {columna}')
                 else:
                     messagebox.showerror("Error", "El archivo está vacío.")
         except Exception as e:
@@ -47,13 +53,24 @@ def boton_Carga(ventana_principal, caja_texto1):
 
 
 
-def boton_Traduccion():
+
+def boton_Traduccion(ventana, caja_texto):
     global ruta_documento_global
     print("Boton Traducción presionado")
     if ruta_documento_global:
         print("Ruta del documento:", ruta_documento_global)
+        # Obtener las palabras procesadas
+        palabras_procesadas = leer_archivo(ruta_documento_global)
+        if palabras_procesadas:
+            # Limpiar la caja de texto 2
+            caja_texto.delete(1.0, tk.END)
+            # Insertar las palabras procesadas en la caja de texto 2
+            for palabra, tipo, linea, columna in palabras_procesadas:
+                caja_texto.insert(tk.END, f'Palabra: {palabra}, Tipo: {tipo}, Línea: {linea}, Columna: {columna}\n')
     else:
         print("No se ha cargado ningún documento.")
+
+
 
 
 
