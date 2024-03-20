@@ -95,12 +95,7 @@ def leer_archivo(ruta_archivo):
     except FileNotFoundError:
         print("El archivo no se pudo encontrar.")
         return None, None
-
-
-
-
-
-
+    
 def generar_html_tablas(palabras_procesadas, errores, archivo_salida):
     with open(archivo_salida, 'w', encoding='utf-8') as f:
         f.write('<html>\n')
@@ -135,4 +130,25 @@ def generar_html_tablas(palabras_procesadas, errores, archivo_salida):
 
         f.write('</body>\n')
         f.write('</html>\n')
+
+
+
+
+def generar_html(palabras_procesadas, nombre_archivo):
+    print("Generando HTML sin tablas...")
+    with open(nombre_archivo, 'w') as f:
+        f.write('<!DOCTYPE html>\n')
+        f.write('<html>\n<head>\n')
+        f.write('<title>Archivo HTML generado</title>\n')
+        f.write('</head>\n<body>\n')
+        f.write('<h1>Este es un archivo HTML generado automáticamente</h1>\n')
+        f.write('</body>\n</html>')
+
+
+
+
+
+
+
+
 

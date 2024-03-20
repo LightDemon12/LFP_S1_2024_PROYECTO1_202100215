@@ -1,11 +1,6 @@
 from estructuras import BloqueInicio, BloqueEncabezado, BloqueCuerpo, Titulo, Fondo, Parrafo, Texto, Codigo, Negrita, Subrayado, Tachado, Cursiva, Salto, Tabla, ElementoTabla
 
 
-
-
-
-
-
 def leer_documento(ruta_archivo):
     if not ruta_archivo:
         print("No se proporcionó ninguna ruta de archivo.")

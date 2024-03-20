@@ -3,7 +3,7 @@ from tkinter import filedialog
 from interfaz import InterfazHTML
 import tkinter.messagebox as messagebox
 from document_handler import abrir_documento
-from analizador_lexico import leer_archivo, generar_html_tablas
+from analizador_lexico import leer_archivo, generar_html_tablas, generar_html
 import webbrowser
 # Variable global para almacenar la ruta del documento
 ruta_documento_global = ""
@@ -52,7 +52,7 @@ def boton_Carga(ventana_principal, caja_texto1):
 
 def boton_Traduccion(ventana, caja_texto):
     global ruta_documento_global
-    print("Boton Traducción presionado")
+    print("Botón Traducción presionado")
     if ruta_documento_global:
         print("Ruta del documento:", ruta_documento_global)
         # Obtener las palabras procesadas y las palabras clasificadas como errores
@@ -68,17 +68,52 @@ def boton_Traduccion(ventana, caja_texto):
                 caja_texto.insert(tk.END, "\nPalabras clasificadas como errores:\n")
                 for palabra, tipo, linea, columna in errores:
                     caja_texto.insert(tk.END, f'TOKEN: {palabra}, TIPO: {tipo}, LÍNEA: {linea}, COLUMNA: {columna}\n')
-                # Pedir al usuario que elija el nombre del archivo de salida
-                nombre_archivo = filedialog.asksaveasfilename(defaultextension=".html", filetypes=[("Archivos HTML", "*.html")])
-                if nombre_archivo:
-                    # Llamar a la función para generar HTML con tablas
-                    generar_html_tablas(palabras_procesadas, errores, nombre_archivo)
-                    # Abrir automáticamente el archivo HTML generado
-                    webbrowser.open_new_tab(nombre_archivo)
+                # Mostrar ventana para generar HTML con tablas de errores
+                mostrar_ventana_errores(palabras_procesadas, errores)
+            else:
+                # Mostrar ventana para generar HTML sin tablas de errores
+                mostrar_ventana_sin_errores(palabras_procesadas)
         else:
             print("No se ha cargado ningún documento.")
 
 
+def mostrar_ventana_sin_errores(palabras_procesadas):
+    ventana_sin_errores = tk.Toplevel()
+    ventana_sin_errores.title("Generar HTML sin errores")
+    ventana_sin_errores.geometry("350x150")
+
+    etiqueta_titulo = tk.Label(ventana_sin_errores, text="¡HTML generado sin errores!", font=("Arial", 14, "bold"), pady=10)
+    etiqueta_titulo.pack()
+
+    etiqueta_explicacion = tk.Label(ventana_sin_errores, text="Puedes generar tu archivo HTML sin problemas.", font=("Arial", 12))
+    etiqueta_explicacion.pack()
+
+    boton_generar_html = tk.Button(ventana_sin_errores, text="Generar HTML", command=lambda: generar_html_cerrar_ventana(palabras_procesadas, "archivo.html", ventana_sin_errores), font=("Arial", 12), padx=20, pady=10)
+    boton_generar_html.pack(pady=10)
+
+def mostrar_ventana_errores(palabras_procesadas, errores):
+    ventana_con_errores = tk.Toplevel()
+    ventana_con_errores.title("Generar HTML con errores")
+    ventana_con_errores.geometry("350x200")
+
+    etiqueta_titulo = tk.Label(ventana_con_errores, text="¡Se encontraron errores!", font=("Arial", 14, "bold"), pady=10)
+    etiqueta_titulo.pack()
+
+    etiqueta_explicacion = tk.Label(ventana_con_errores, text="Revisa los errores encontrados y genera tu archivo HTML.", font=("Arial", 12))
+    etiqueta_explicacion.pack()
+
+    boton_generar_html = tk.Button(ventana_con_errores, text="Generar HTML", command=lambda: generar_html_tablas_cerrar_ventana(palabras_procesadas, errores, "archivo.html", ventana_con_errores), font=("Arial", 12), padx=20, pady=10)
+    boton_generar_html.pack(pady=10)
+
+def generar_html_cerrar_ventana(palabras_procesadas, nombre_archivo, ventana):
+    generar_html(palabras_procesadas, nombre_archivo)
+    webbrowser.open_new_tab(nombre_archivo)
+    ventana.destroy()
+
+def generar_html_tablas_cerrar_ventana(palabras_procesadas, errores, nombre_archivo, ventana):
+    generar_html_tablas(palabras_procesadas, errores, nombre_archivo)
+    webbrowser.open_new_tab(nombre_archivo)
+    ventana.destroy()
 
 
 
