@@ -3,7 +3,8 @@ from tkinter import filedialog
 from interfaz import InterfazHTML
 import tkinter.messagebox as messagebox
 from document_handler import abrir_documento
-from analizador_lexico import leer_archivo
+from analizador_lexico import leer_archivo, generar_html_tablas
+
 # Variable global para almacenar la ruta del documento
 ruta_documento_global = ""
 
@@ -49,26 +50,30 @@ def boton_Carga(ventana_principal, caja_texto1):
     else:
         print("No se seleccionó ningún documento.")
 
-
-
-
-
-
 def boton_Traduccion(ventana, caja_texto):
     global ruta_documento_global
     print("Boton Traducción presionado")
     if ruta_documento_global:
         print("Ruta del documento:", ruta_documento_global)
-        # Obtener las palabras procesadas
-        palabras_procesadas = leer_archivo(ruta_documento_global)
+        # Obtener las palabras procesadas y las palabras clasificadas como errores
+        palabras_procesadas, errores = leer_archivo(ruta_documento_global)
         if palabras_procesadas:
-            # Limpiar la caja de texto 2
+            # Limpiar la caja de texto
             caja_texto.delete(1.0, tk.END)
-            # Insertar las palabras procesadas en la caja de texto 2
+            # Insertar las palabras procesadas en la caja de texto
             for palabra, tipo, linea, columna in palabras_procesadas:
-                caja_texto.insert(tk.END, f'Palabra: {palabra}, Tipo: {tipo}, Línea: {linea}, Columna: {columna}\n')
+                caja_texto.insert(tk.END, f'TOKEN: {palabra}, TIPO: {tipo}, LÍNEA: {linea}, COLUMNA: {columna}\n')
+            # Insertar las palabras clasificadas como errores en la caja de texto al final
+            if errores:
+                caja_texto.insert(tk.END, "\nPalabras clasificadas como errores:\n")
+                for palabra, tipo, linea, columna in errores:
+                    caja_texto.insert(tk.END, f'TOKEN: {palabra}, TIPO: {tipo}, LÍNEA: {linea}, COLUMNA: {columna}\n')
+                # Llamar a la función para generar HTML con tablas
+                generar_html_tablas(palabras_procesadas, errores, 'ruta_del_archivo_de_salida.html')
+
     else:
         print("No se ha cargado ningún documento.")
+
 
 
 

@@ -1,6 +1,6 @@
-Inicio:{
+Inici||o:{
     Encabezado:{
-        TituloPagina:"Ejemplo titulo";
+        TituloPag||ina:"Ejemplo titulo";
     },
     Cuerpo:[
         Titulo:{
@@ -40,5 +40,12 @@ Inicio:{
         Salto:{
             cantidad:"5";
         }
+        Tabla:{
+            filas:"4";
+            columnas:"3";
+            elemento:{"fila":"1","columna":"1","Texto mostrado en fila 1 columna 1"};
+            elemento:{"fila":"1","columna":"2","Texto mostrado en fila 1 columna 2"};
+            elemento:{"fila":"1","columna":"3","Texto mostrado en fila 1 columna 3"};
+}
     ]
 }
