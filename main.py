@@ -4,7 +4,7 @@ from interfaz import InterfazHTML
 import tkinter.messagebox as messagebox
 from document_handler import abrir_documento
 from analizador_lexico import leer_archivo, generar_html_tablas
-
+import webbrowser
 # Variable global para almacenar la ruta del documento
 ruta_documento_global = ""
 
@@ -68,12 +68,15 @@ def boton_Traduccion(ventana, caja_texto):
                 caja_texto.insert(tk.END, "\nPalabras clasificadas como errores:\n")
                 for palabra, tipo, linea, columna in errores:
                     caja_texto.insert(tk.END, f'TOKEN: {palabra}, TIPO: {tipo}, LÍNEA: {linea}, COLUMNA: {columna}\n')
-                # Llamar a la función para generar HTML con tablas
-                generar_html_tablas(palabras_procesadas, errores, 'ruta_del_archivo_de_salida.html')
-
-    else:
-        print("No se ha cargado ningún documento.")
-
+                # Pedir al usuario que elija el nombre del archivo de salida
+                nombre_archivo = filedialog.asksaveasfilename(defaultextension=".html", filetypes=[("Archivos HTML", "*.html")])
+                if nombre_archivo:
+                    # Llamar a la función para generar HTML con tablas
+                    generar_html_tablas(palabras_procesadas, errores, nombre_archivo)
+                    # Abrir automáticamente el archivo HTML generado
+                    webbrowser.open_new_tab(nombre_archivo)
+        else:
+            print("No se ha cargado ningún documento.")
 
 
 

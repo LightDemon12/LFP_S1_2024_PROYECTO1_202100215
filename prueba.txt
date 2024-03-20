@@ -1,6 +1,6 @@
-Inici||o:{
+Inicio:{
     Encabezado:{
-        TituloPag||ina:"Ejemplo titulo";
+        TituloPagina:"Ejemplo titulo";
     },
     Cuerpo:[
         Titulo:{
@@ -44,8 +44,8 @@ Inici||o:{
             filas:"4";
             columnas:"3";
             elemento:{"fila":"1","columna":"1","Texto mostrado en fila 1 columna 1"};
-            elemento:{"fila":"1","columna":"2","Texto mostrado en fila 1 columna 2"};
-            elemento:{"fila":"1","columna":"3","Texto mostrado en fila 1 columna 3"};
+            elemento:{"fila":"2","columna":"2","Texto mostrado en fila 1 columna 2"};
+            elemento:{"fila":"3","columna":"3","Texto mostrado en fila 1 columna 3"};
 }
     ]
 }
