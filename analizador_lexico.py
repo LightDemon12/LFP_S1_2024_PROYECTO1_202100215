@@ -36,6 +36,9 @@ def clasificar_palabra(palabra, linea_actual, columna_actual):
     return caracteres, tipo_palabra, linea_palabra, columna_palabra
 
 def leer_archivo(ruta_archivo):
+    palabras_reservadas = ["Inicio", "Encabezado", "Cuerpo", "Titulo", "Fondo", "Parrafo", "Texto", "Codigo", "Negrita", "Subrayado", "Tachado", "Cursiva", "Salto", "Tabla"]
+    instrucciones = ["TituloPagina", "texto", "posicion", "tamaño", "color", "cantidad", "elemento", "filas", "columnas"]
+    
     try:
         with open(ruta_archivo, 'r', encoding='utf-8') as file:
             contenido = file.read()
@@ -51,7 +54,11 @@ def leer_archivo(ruta_archivo):
                     columna_actual = 1
                 elif caracter in ['{', '}', ':', '"', ',', ';', '[', ']', '=', '.']:
                     if palabra_actual:
-                        if palabra_actual.isdigit():
+                        if palabra_actual in palabras_reservadas:
+                            palabras_procesadas.append((palabra_actual, 'RESERVADA', linea_actual, columna_actual - len(palabra_actual)))
+                        elif palabra_actual in instrucciones:
+                            palabras_procesadas.append((palabra_actual, 'INSTRUCCION', linea_actual, columna_actual - len(palabra_actual)))
+                        elif palabra_actual.isdigit():
                             palabras_procesadas.append((palabra_actual, 'NUMERO', linea_actual, columna_actual - len(palabra_actual)))
                         else:
                             palabras_procesadas.append((palabra_actual, 'PALABRA', linea_actual, columna_actual - len(palabra_actual)))
@@ -61,7 +68,11 @@ def leer_archivo(ruta_archivo):
                     palabra_actual += caracter
                 elif caracter.isspace():
                     if palabra_actual:
-                        if palabra_actual.isdigit():
+                        if palabra_actual in palabras_reservadas:
+                            palabras_procesadas.append((palabra_actual, 'RESERVADA', linea_actual, columna_actual - len(palabra_actual)))
+                        elif palabra_actual in instrucciones:
+                            palabras_procesadas.append((palabra_actual, 'INSTRUCCION', linea_actual, columna_actual - len(palabra_actual)))
+                        elif palabra_actual.isdigit():
                             palabras_procesadas.append((palabra_actual, 'NUMERO', linea_actual, columna_actual - len(palabra_actual)))
                         else:
                             palabras_procesadas.append((palabra_actual, 'PALABRA', linea_actual, columna_actual - len(palabra_actual)))
@@ -71,7 +82,11 @@ def leer_archivo(ruta_archivo):
                 columna_actual += 1
             
             if palabra_actual:
-                if palabra_actual.isdigit():
+                if palabra_actual in palabras_reservadas:
+                    palabras_procesadas.append((palabra_actual, 'RESERVADA', linea_actual, columna_actual - len(palabra_actual)))
+                elif palabra_actual in instrucciones:
+                    palabras_procesadas.append((palabra_actual, 'INSTRUCCION', linea_actual, columna_actual - len(palabra_actual)))
+                elif palabra_actual.isdigit():
                     palabras_procesadas.append((palabra_actual, 'NUMERO', linea_actual, columna_actual - len(palabra_actual)))
                 else:
                     palabras_procesadas.append((palabra_actual, 'PALABRA', linea_actual, columna_actual - len(palabra_actual)))
@@ -80,6 +95,7 @@ def leer_archivo(ruta_archivo):
     except FileNotFoundError:
         print("El archivo no se pudo encontrar.")
         return None, None
+
 
 
 

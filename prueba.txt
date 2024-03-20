@@ -1,4 +1,4 @@
-Inicio:{
+Inic|io:{
     Encabezado:{
         TituloPagina:"Ejemplo titulo";
     },
