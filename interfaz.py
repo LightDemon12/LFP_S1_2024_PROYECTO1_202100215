@@ -34,16 +34,16 @@ class InterfazHTML:
         # Posicionamiento del botón en la ventana
         boton.grid(row=fila, column=columna, columnspan=columnspan, padx=10, pady=10)
 
-    def caja_texto(self, fila, columna, rowspan=1, columnspan=1):
+    def caja_texto(self, fila, columna, rowspan=1, columnspan=1, height=10, width=40):
         # Método para crear cajas de texto
         caja = tk.Text(  
             master=self.ventana,
             wrap="word", 
-            height=10,
-            width=40,
-            fg="red", 
+            height=height,
+            width=width,
+            fg="black", 
             bg="white", 
         )
         # Posicionamiento de la caja de texto en la ventana
         caja.grid(row=fila, column=columna, rowspan=rowspan, columnspan=columnspan, padx=10, pady=10)
-        return caja 
+        return caja
