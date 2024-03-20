@@ -2,7 +2,7 @@ Inicio:{
     Encabezado:{
         TituloPagina:"Ejemplo titulo";
     },
-    Cuerpo:[
+    Cuerpo:{
         Titulo:{
             texto:"Este es un titulo";
             posicion:"izquierda";
@@ -17,9 +17,9 @@ Inicio:{
             posicion:"izquierda";
         },
         Texto:{
-            fuente="Arial";
-            color="azul";
-            tamaño="11";
+            fuente:"Arial";
+            color:"azul";
+            tamaño:"11";
         },
         Codigo:{
             texto:"Muestra el texto con fuente de codigo de ordenador.";
@@ -40,5 +40,5 @@ Inicio:{
         Salto:{
             cantidad:"5";
         }
-    ]
+    }
 }
