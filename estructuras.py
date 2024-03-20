@@ -1,8 +1,10 @@
 class BloqueInicio:
-    def __init__(self, encabezado, cuerpo, linea):
+    def __init__(self, encabezado, cuerpo, linea, numero, otro_parametro):
         self.encabezado = encabezado
         self.cuerpo = cuerpo
         self.linea = linea
+        self.numero = numero
+        self.otro_parametro = otro_parametro
 
 
 class BloqueEncabezado:

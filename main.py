@@ -2,7 +2,7 @@ import tkinter as tk
 from tkinter import filedialog
 from interfaz import InterfazHTML
 import tkinter.messagebox as messagebox
-from document_handler import abrir_documento, procesar_documento
+from document_handler import abrir_documento, leer_documento
 # Variable global para almacenar la ruta del documento
 ruta_documento_global = ""
 
@@ -35,7 +35,7 @@ def boton_Carga(ventana_principal, caja_texto1):
                     caja_texto1.delete(1.0, tk.END)  # Limpiar la caja de texto
                     caja_texto1.insert(tk.END, ''.join(contenido))  # Insertar el contenido en la caja de texto
                     # Llamar a la función para procesar el documento después de cargarlo en la caja de texto
-                    procesar_documento(contenido)
+                    leer_documento(ruta_documento)
                 else:
                     messagebox.showerror("Error", "El archivo está vacío.")
         except Exception as e:
