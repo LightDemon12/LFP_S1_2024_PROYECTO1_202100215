@@ -3,7 +3,6 @@ class Encabezado:
     def __init__(self, titulo_pagina):
         self.titulo_pagina = titulo_pagina
         self.instruccion = "encabezado"
-
     def __str__(self):
         return f'<title>{self.titulo_pagina}</title>'
 
@@ -14,24 +13,21 @@ class Titulo:
         self.tamaño = tamaño
         self.color = color
         self.instruccion = "titulo"
-
     def __str__(self):
-        return f'<{self.tamaño} style="color: {self.color};">{self.texto}</{self.tamaño}>'
+        return f'<{self.tamaño}><p align ="{self.posicion}"style="color: {self.color};, ">   {self.texto}  </p></{self.tamaño}>'
 
 class Fondo:
     def __init__(self, color):
         self.color = color
         self.instruccion = "fondo"
-
     def __str__(self):
-        return f'<div style="background-color: {self.color};"></div>'
+        return f'<style>body{{background-color: {self.color};}}</style>'
 
 class Parrafo:
     def __init__(self, texto, posicion):
         self.texto = texto
         self.posicion = posicion
         self.instruccion = "parrafo"
-
     def __str__(self):
         return f'<p align="{self.posicion}">{self.texto}</p>'
 
@@ -41,24 +37,22 @@ class Texto:
         self.color = color
         self.tamaño = tamaño
         self.instruccion = "texto"
-
+        self.texto = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum"
     def __str__(self):
-        return f'<span style="font-family: {self.fuente}; color: {self.color}; font-size: {self.tamaño};"></span>'
+        return f'<span style="font-family: {self.fuente}; color: {self.color}; font-size: {self.tamaño}px;">{self.texto}</span>'
 
 class Codigo:
     def __init__(self, texto, posicion):
         self.texto = texto
         self.posicion = posicion
         self.instruccion = "codigo"
-
     def __str__(self):
-        return f'<code style="position: {self.posicion};">{self.texto}</code>'
+        return f'<div style="text-align: {self.posicion}; font-family: monospace;">{self.texto}</div>'
 
 class Negrita:
     def __init__(self, texto):
         self.texto = texto
         self.instruccion = "negrita"
-
     def __str__(self):
         return f'<b>{self.texto}</b><br>'
 
@@ -66,7 +60,6 @@ class Subrayado:
     def __init__(self, texto):
         self.texto = texto
         self.instruccion = "subrayado"
-
     def __str__(self):
         return f'<u>{self.texto}</u><br>'
 
@@ -74,7 +67,6 @@ class Tachado:
     def __init__(self, texto):
         self.texto = texto
         self.instruccion = "tachado"
-
     def __str__(self):
         return f'<s>{self.texto}</s><br>'
 
@@ -82,7 +74,6 @@ class Cursiva:
     def __init__(self, texto):
         self.texto = texto
         self.instruccion = "cursiva"
-
     def __str__(self):
         return f'<i>{self.texto}</i><br>'
 
@@ -90,9 +81,13 @@ class Salto:
     def __init__(self, cantidad):
         self.cantidad = cantidad
         self.instruccion = "salto"
+    def __str__(self):
+        salto = ""
+        for _ in range(int(self.cantidad)):
+            salto += "<br>\n"
+        return salto
 
-def __str__(self):
-    return f'<br>{int(self.cantidad) * "<br>"}'
+
 
 
 class Tabla:
@@ -303,7 +298,7 @@ def procesar_bloque_negrita(bloque):
     
     # Recorrer cada línea y extraer la información entre comillas
     for linea in lineas:
-        if "elemento" in linea:
+        if "texto" in linea:
             texto = linea.split('"')[1]
     
     # Crear un objeto de la clase Negrita con la información obtenida
@@ -321,7 +316,7 @@ def procesar_bloque_subrayado(bloque):
     
     # Recorrer cada línea y extraer la información entre comillas
     for linea in lineas:
-        if "elemento" in linea:
+        if "texto" in linea:
             texto = linea.split('"')[1]
     
     # Crear un objeto de la clase Subrayado con la información obtenida
@@ -339,7 +334,7 @@ def procesar_bloque_tachado(bloque):
     
     # Recorrer cada línea y extraer la información entre comillas
     for linea in lineas:
-        if "elemento" in linea:
+        if "texto" in linea:
             texto = linea.split('"')[1]
     
     # Crear un objeto de la clase Tachado con la información obtenida
@@ -357,7 +352,7 @@ def procesar_bloque_cursiva(bloque):
     
     # Recorrer cada línea y extraer la información entre comillas
     for linea in lineas:
-        if "elemento" in linea:
+        if "texto" in linea:
             texto = linea.split('"')[1]
     
     # Crear un objeto de la clase Cursiva con la información obtenida
@@ -376,7 +371,8 @@ def procesar_bloque_salto(bloque):
     # Recorrer cada línea y extraer la información entre comillas
     for linea in lineas:
         if "cantidad" in linea:
-            cantidad = linea.split('"')[1]
+            cantidad_str = linea.split('"')[1]
+            cantidad = int(cantidad_str) if cantidad_str.isdigit() else None
     
     # Crear un objeto de la clase Salto con la información obtenida
     nuevo_salto = Salto(cantidad)
@@ -393,8 +389,10 @@ def leer_documento(ruta_archivo):
             contenido = archivo.read()
             
             # Lista de palabras clave
-            palabras_clave = ["Encabezado", "Titulo", "Fondo", "Parrafo", "Texto", "Codigo", 
-                              "Negrita", "Subrayado", "Tachado", "Cursiva", "Salto"]
+            palabras_clave = ["Encabezado", "Titulo", "Fondo", "Parrafo", "Texto", "Codigo", "Negrita", "Subrayado", "Tachado", "Cursiva", "Salto"]
+            
+            # Diccionario para almacenar los bloques procesados junto con su posición
+            bloques_procesados = {}
             
             # Bucle para buscar y procesar todas las ocurrencias de cada palabra clave
             for palabra_clave in palabras_clave:
@@ -406,36 +404,45 @@ def leer_documento(ruta_archivo):
                         fin_bloque = contenido.find("}", inicio_bloque)
                         if inicio_bloque != -1 and fin_bloque != -1:
                             bloque = contenido[inicio_bloque + 1:fin_bloque]
-                            print(bloque)
-                            # Llamar a la función para procesar el bloque correspondiente
-                            if palabra_clave == "Encabezado":
-                                procesar_bloque_encabezado(bloque)
-                            elif palabra_clave == "Titulo":
-                                procesar_bloque_titulo(bloque)
-                            elif palabra_clave == "Fondo":
-                                procesar_bloque_fondo(bloque)
-                            elif palabra_clave == "Parrafo":
-                                procesar_bloque_parrafo(bloque)
-                            elif palabra_clave == "Texto":
-                                procesar_bloque_texto(bloque)
-                            elif palabra_clave == "Codigo":
-                                procesar_bloque_codigo(bloque)
-                            elif palabra_clave == "Negrita":
-                                procesar_bloque_negrita(bloque)
-                            elif palabra_clave == "Subrayado":
-                                procesar_bloque_subrayado(bloque)
-                            elif palabra_clave == "Tachado":
-                                procesar_bloque_tachado(bloque)
-                            elif palabra_clave == "Cursiva":
-                                procesar_bloque_cursiva(bloque)
-                            elif palabra_clave == "Salto":
-                                procesar_bloque_salto(bloque)
+                            # Almacenar el bloque junto con su posición
+                            bloques_procesados[(palabra_clave, indice_palabra_clave)] = bloque
                             # Actualizar el índice de búsqueda para la próxima iteración
                             indice_busqueda = fin_bloque + 1
                         else:
                             break  # Si no se encuentra el bloque, salir del bucle while
                     else:
                         break  # Si no se encuentra la palabra clave, salir del bucle while
+            
+            # Ordenar los bloques procesados por su posición en el archivo
+            bloques_ordenados = sorted(bloques_procesados.items(), key=lambda x: x[0][1])
+            
+            # Procesar los bloques en el orden correcto
+            for clave, bloque in bloques_ordenados:
+                palabra_clave, _ = clave
+                print(bloque)
+                # Llamar a la función para procesar el bloque correspondiente
+                if palabra_clave == "Encabezado":
+                    procesar_bloque_encabezado(bloque)
+                elif palabra_clave == "Titulo":
+                    procesar_bloque_titulo(bloque)
+                elif palabra_clave == "Fondo":
+                    procesar_bloque_fondo(bloque)
+                elif palabra_clave == "Parrafo":
+                    procesar_bloque_parrafo(bloque)
+                elif palabra_clave == "Texto":
+                    procesar_bloque_texto(bloque)
+                elif palabra_clave == "Codigo":
+                    procesar_bloque_codigo(bloque)
+                elif palabra_clave == "Negrita":
+                    procesar_bloque_negrita(bloque)
+                elif palabra_clave == "Subrayado":
+                    procesar_bloque_subrayado(bloque)
+                elif palabra_clave == "Tachado":
+                    procesar_bloque_tachado(bloque)
+                elif palabra_clave == "Cursiva":
+                    procesar_bloque_cursiva(bloque)
+                elif palabra_clave == "Salto":
+                    procesar_bloque_salto(bloque)
 
             # Imprimir los elementos de la estructura después de procesar todos los bloques
             for elemento in Estructura:
@@ -444,6 +451,7 @@ def leer_documento(ruta_archivo):
                 print(elemento)
     except FileNotFoundError:
         print("El archivo no pudo ser encontrado.")
+
 
 
 
@@ -459,12 +467,19 @@ leer_documento(ruta_archivo)
 
 def crear_html(nombre_archivo="output.html"):
     try:
-        with open(nombre_archivo, "w") as archivo:
+        with open(nombre_archivo, "w", encoding="utf-8") as archivo:
             archivo.write("""
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Documento HTML generado</title>
+
+""")
+            # Imprimir los elementos de la lista EncabezadoTitulo
+            for elemento in EncabezadoTitulo:
+                archivo.write(str(elemento))
+                archivo.write("\n")  # Agregar un salto de línea después de cada elemento
+            
+            archivo.write("""
 </head>
 <body>
 """)
@@ -480,6 +495,7 @@ def crear_html(nombre_archivo="output.html"):
         print(f"Se ha creado el archivo HTML '{nombre_archivo}' correctamente.")
     except Exception as e:
         print(f"No se pudo crear el archivo HTML: {e}")
+
 
 
 

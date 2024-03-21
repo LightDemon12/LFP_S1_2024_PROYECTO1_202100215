@@ -3,7 +3,8 @@ from tkinter import filedialog
 from interfaz import InterfazHTML
 import tkinter.messagebox as messagebox
 from document_handler import abrir_documento
-from analizador_lexico import leer_archivo, generar_html_tablas, generar_html
+from analizador_lexico import leer_archivo, generar_html_tablas
+from lector import leer_documento
 import webbrowser
 # Variable global para almacenar la ruta del documento
 ruta_documento_global = ""
@@ -106,7 +107,7 @@ def mostrar_ventana_errores(palabras_procesadas, errores):
     boton_generar_html.pack(pady=10)
 
 def generar_html_cerrar_ventana(palabras_procesadas, nombre_archivo, ventana):
-    generar_html(palabras_procesadas, nombre_archivo)
+    leer_documento(palabras_procesadas, nombre_archivo)
     webbrowser.open_new_tab(nombre_archivo)
     ventana.destroy()
 

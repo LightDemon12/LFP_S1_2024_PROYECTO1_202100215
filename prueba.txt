@@ -4,76 +4,119 @@ Inicio:{
     },
     Cuerpo:[
         Texto:{
-            fuente="Arial";
-            color="azul";
-            tamaño="11";
-        },
-        Titulo:{
-            texto:"Este es un titulo";
-            posicion:"centro";
-            tamaño:"t1";
-            color:"#CD5C5C";
-        },
-
-        Titulo:{
-            
-            posicion:"derecha";
-            tamaño:"t3";
-            color:"rojo";
-            texto:"Este es un titulo2";
-        },
-        Fondo:{
-            color:"cyan";
-        },
-        Parrafo:{
-            texto:"Este es un parrafo de ejemplo.";
-            posicion:"izquierda";
-        },
-        Parrafo:{
-            texto:"Este es un parrafo de ejemplo.";
-            posicion:"izquierda";
-        },
-        Parrafo:{
-            texto:"Este es un parrafo de ejemplo.";
-            posicion:"izquierda";
-        },
-        Titulo:{
-            texto:"Este es un titulo1";
-            posicion:"izquierda";
-            tamaño:"t4";
+            fuente:"Arial";
             color:"azul";
-        },
-        Texto:{
-            fuente="Arial";
-            color="azul";
-            tamaño="11";
-        },
-
-        Codigo:{
-            texto:"Muestra el texto con fuente de codigo de ordenador.";
-            posicion:"centro";
-        },
-        Negrita:{
-            texto:"Este texto aparecerá en negrita.";
-        },
-        Subrayado:{
-            texto:"Este texto aparecerá Subrayado.";
-        },
-        Tachado:{
-            texto:"Este texto aparecerá tachado.";
+            tamaño:"11";
+            estilo:"normal";
         },
         Cursiva:{
-            texto:"Este texto aparecerá en cursiva.";
+            texto:"Este es un texto en cursiva.";
+            color:"azul";
         },
-        Salto:{
-            cantidad:"5";
+        Fondo:{
+        color:"#FFA07A";
+        },
+        Tachado:{
+            texto:"Este es un texto tachado.";
+            color:"rojo";
+        },
+        Subrayado:{
+            texto:"Este es un texto subrayado.";
+            color:"verde";
+        },
+        Negrita:{
+            texto:"Este es un texto en negrita.";
+            color:"negro";
+        },
+        Codigo:{
+            texto:"Muestra el texto con fuente de código de ordenador.";
+            posicion:"centro";
+            color:"gris";
+            tamaño:"12";
+        },
+        Texto:{
+            fuente:"Arial";
+            color:"azul";
+            tamaño:"11";
+            estilo:"normal";
+        },
+        Parrafo:{
+            texto:"Este es un párrafo de ejemplo.";
+            posicion:"izquierda";
+            color:"verde";
+            tamaño:"t2";
+        },
+        Titulo:{
+            texto:"Este es un título";
+            posicion:"centro";
+            tamaño:"t1";
+            color:"rojo";
+        },
+        Tachado:{
+            texto:"Otro texto tachado.";
+            color:"azul";
+        },
+        Subrayado:{
+            texto:"Otro texto subrayado.";
+            color:"verde";
+        },
+        Negrita:{
+            texto:"Otro texto en negrita.";
+            color:"negro";
+        },
+        Codigo:{
+            texto:"Otro texto con fuente de código.";
+            posicion:"derecha";
+            color:"gris";
+            tamaño:"14";
+        },
+        Texto:{
+            fuente:"Verdana";
+            color:"verde";
+            tamaño:"12";
+            estilo:"negrita";
+        },
+        Parrafo:{
+            texto:"Otro párrafo.";
+            posicion:"centro";
+            color:"azul";
+            tamaño:"t3";
+        },
+        Titulo:{
+            texto:"Otro título";
+            posicion:"derecha";
+            tamaño:"t2";
+            color:"verde";
+        },
+        Cursiva:{
+            texto:"Otro texto en cursiva.";
+            color:"rojo";
+        },
+        Tachado:{
+            texto:"Otro texto tachado.";
+            color:"azul";
+        },
+        Subrayado:{
+            texto:"Otro texto subrayado.";
+            color:"verde";
+        },
+        Codigo:{
+            texto:"Otro texto con fuente de código.";
+            posicion:"izquierda";
+            color:"gris";
+            tamaño:"16";
+        },
+        Texto:{
+            fuente:"Courier New";
+            color:"rojo";
+            tamaño:"14";
+            estilo:"cursiva";
+        },
+        Parrafo:{
+            texto:"Otro párrafo.";
+            posicion:"derecha";
+            color:"rojo";
+            tamaño:"t4";
         }
-        Tabla:{
-            filas:"4";
-            columnas:"3";
-            elemento:{"fila":"1","columna":"1","Texto mostrado en fila 1 columna 1"};
-            elemento:{"fila":"2","columna":"2","Texto mostrado en fila 1 columna 2"};
-            elemento:{"fila":"3","columna":"3","Texto mostrado en fila 1 columna 3"};
-}
     ]
 }

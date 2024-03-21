@@ -2,7 +2,7 @@
 import html
 
 def clasificar_palabra(palabra, linea_actual, columna_actual):
-    caracteres_especiales = ['{', '}', ':', '"', ',', ';', '[', ']','=','.']
+    caracteres_especiales = ['{', '}', ':', '"', ',', ';', '[', ']','=','.', '#']
     caracteres = []
     tipo_palabra = None
     linea_palabra = linea_actual
@@ -52,7 +52,7 @@ def leer_archivo(ruta_archivo):
                 if caracter == '\n':
                     linea_actual += 1
                     columna_actual = 1
-                elif caracter in ['{', '}', ':', '"', ',', ';', '[', ']', '=', '.']:
+                elif caracter in ['{', '}', ':', '"', ',', ';', '[', ']', '=', '.', '#']:
                     if palabra_actual:
                         if palabra_actual in palabras_reservadas:
                             palabras_procesadas.append((palabra_actual, 'RESERVADA', linea_actual, columna_actual - len(palabra_actual)))
