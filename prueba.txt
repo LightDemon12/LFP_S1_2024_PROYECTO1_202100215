@@ -3,11 +3,24 @@ Inicio:{
         TituloPagina:"Ejemplo titulo";
     },
     Cuerpo:[
+        Texto:{
+            fuente="Arial";
+            color="azul";
+            tamaño="11";
+        },
         Titulo:{
             texto:"Este es un titulo";
-            posicion:"izquierda";
+            posicion:"centro";
             tamaño:"t1";
+            color:"#CD5C5C";
+        },
+
+        Titulo:{
+            
+            posicion:"derecha";
+            tamaño:"t3";
             color:"rojo";
+            texto:"Este es un titulo2";
         },
         Fondo:{
             color:"cyan";
@@ -16,11 +29,26 @@ Inicio:{
             texto:"Este es un parrafo de ejemplo.";
             posicion:"izquierda";
         },
+        Parrafo:{
+            texto:"Este es un parrafo de ejemplo.";
+            posicion:"izquierda";
+        },
+        Parrafo:{
+            texto:"Este es un parrafo de ejemplo.";
+            posicion:"izquierda";
+        },
+        Titulo:{
+            texto:"Este es un titulo1";
+            posicion:"izquierda";
+            tamaño:"t4";
+            color:"azul";
+        },
         Texto:{
             fuente="Arial";
             color="azul";
             tamaño="11";
         },
+
         Codigo:{
             texto:"Muestra el texto con fuente de codigo de ordenador.";
             posicion:"centro";

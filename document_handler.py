@@ -1,6 +1,5 @@
 import tkinter as tk
 from tkinter import filedialog
-from estructuras import BloqueInicio, BloqueEncabezado, BloqueCuerpo, Titulo, Fondo, Parrafo, Texto, Codigo, Negrita, Subrayado, Tachado, Cursiva, Salto, Tabla
 
 
 
@@ -17,9 +16,6 @@ def abrir_documento():
     else:
         print("No se seleccionó ningún documento.")
         return None
-
-
-
 
 
 
