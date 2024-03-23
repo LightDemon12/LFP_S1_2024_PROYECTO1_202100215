@@ -464,16 +464,12 @@ def leer_documento(ruta_archivo):
 
 
 
-# Uso de la función
-ruta_archivo = "hola.txt"
-leer_documento(ruta_archivo)
 
 
 
-
-def crear_html(nombre_archivo="output.html"):
+def crear_html(nombre_archivo2):
     try:
-        with open(nombre_archivo, "w", encoding="utf-8") as archivo:
+        with open(nombre_archivo2, "w", encoding="utf-8") as archivo:
             archivo.write("""
 <!DOCTYPE html>
 <html>
@@ -498,13 +494,16 @@ def crear_html(nombre_archivo="output.html"):
 </body>
 </html>
 """)
-        print(f"Se ha creado el archivo HTML '{nombre_archivo}' correctamente.")
+        print(f"Se ha creado el archivo HTML '{nombre_archivo2}' correctamente.")
     except Exception as e:
         print(f"No se pudo crear el archivo HTML: {e}")
 
 
-crear_html("output.html")
 
+def limpiar_listas():
+    global Estructura, EncabezadoTitulo
+    Estructura.clear()
+    EncabezadoTitulo.clear()
 
 
 
