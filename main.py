@@ -20,7 +20,7 @@ def main():
     caja_texto1 = interfaz.caja_texto(fila=2, columna=0, columnspan=2, height=35, width=70) # Crear caja de texto y ajustar tamaño
     boton_carga = interfaz.boton("Cargar archivo", lambda ventana=ventana_principal, caja_texto=caja_texto1: boton_Carga(ventana, caja_texto), fila=1, columna=1)
     caja_texto2 = interfaz.caja_texto(fila=2, columna=2, columnspan=2, height=35, width=70) # Crear caja de texto y ajustar tamaño
-    boton_traduccion = interfaz.boton("Traducir archivo", lambda ventana=ventana_principal, caja_texto=caja_texto2: boton_Traduccion(ventana, caja_texto), fila=1, columna=3)
+    boton_traduccion = interfaz.boton("Traducir archivo", lambda ventana=ventana_principal, caja_texto=caja_texto2: boton_Traduccion(ventana, caja_texto, caja_texto2), fila=1, columna=3)
     boton_actualizar = interfaz.boton("Actualizar Contenido", lambda ventana=ventana_principal, caja_texto2=caja_texto2, caja_texto1=caja_texto1: actualizar_contenido(caja_texto1, ventana,caja_texto2), fila=1, columna=2)
 
     ventana_principal.mainloop() # Mostrar ventana
@@ -40,6 +40,7 @@ def boton_Carga(ventana_principal, caja_texto1):
                 if contenido:  # Verificar si el contenido no está vacío
                     caja_texto1.delete(1.0, tk.END)  # Limpiar la caja de texto
                     caja_texto1.insert(tk.END, ''.join(contenido))  # Insertar el contenido en la caja de texto
+                    leer_documento(ruta_documento)  # Llamar a la función leer_documento
                 else:
                     messagebox.showerror("Error", "El archivo está vacío.")
         except Exception as e:
@@ -60,31 +61,29 @@ def copiar_contenido_a_archivo(archivo, contenido):
 
 
 def actualizar_contenido(caja_texto1, ventana_principal, caja_texto2):
-    
     global ruta_documento_global
     if ruta_documento_global:
         caja_texto2.delete(1.0, tk.END)
         contenido_texto = caja_texto1.get(1.0, tk.END)  # Obtener el contenido de la caja de texto
         if contenido_texto.strip():  # Verificar si hay contenido en la caja de texto
             copiar_contenido_a_archivo(ruta_documento_global, contenido_texto)
-            
-            
         else:
             print("La caja de texto está vacía. No se copia nada en el archivo.")
+        leer_documento(ruta_documento_global)  # Llamar a la función leer_documento con la ruta del archivo
+        reiniciar_programa()  # Reiniciar el programa
     else:
         print("No se ha cargado ningún documento.")
-    reiniciar_programa()  # Reiniciar el programa
 
 def reiniciar_programa():
-
     global ruta_documento_global  # Agregar esta línea para reiniciar la variable global
     limpiar_listas()
     limpiar_listas_secundarias()
 
 
-def boton_Traduccion(ventana, caja_texto):
+def boton_Traduccion(ventana, caja_texto, caja_texto2):
     global ruta_documento_global
     print("Botón Traducción presionado")
+    leer_documento(ruta_documento_global)
     if ruta_documento_global:
         print("Ruta del documento:", ruta_documento_global)
         # Obtener las palabras procesadas y las palabras clasificadas como errores
@@ -116,14 +115,13 @@ def boton_Traduccion(ventana, caja_texto):
                 mostrar_ventana_errores(palabras_procesadas, errores)
             else:
                 # Mostrar ventana para generar HTML sin tablas de errores
-                mostrar_ventana_sin_errores(palabras_procesadas, errores)
-
+                mostrar_ventana_sin_errores(palabras_procesadas, errores, caja_texto2)
         else:
             print("No se ha cargado ningún documento.")
 
 
 
-def mostrar_ventana_sin_errores(palabras_procesadas, errores):
+def mostrar_ventana_sin_errores(palabras_procesadas, errores, caja_texto2):
     ventana_sin_errores = tk.Toplevel()
     ventana_sin_errores.title("Generar HTML sin errores")
     ventana_sin_errores.geometry("500x300")
@@ -151,13 +149,14 @@ def mostrar_ventana_sin_errores(palabras_procesadas, errores):
         nombre_tabla = entrada_tabla.get().strip()
 
         if nombre_html and nombre_tabla:  # Verificar si ambos campos están completos
-            generar_html_y_cerrar_ventana(ventana_sin_errores, nombre_html + ".html", palabras_procesadas, errores, nombre_tabla + ".html")
+            generar_html_y_cerrar_ventana(ventana_sin_errores, nombre_html + ".html", palabras_procesadas, errores, nombre_tabla + ".html", caja_texto2)
         else:
             messagebox.showerror("Error", "Por favor, completa ambos campos.")
 
     # Botón para generar HTML y cerrar ventana
     boton_generar_html = tk.Button(ventana_sin_errores, text="Generar HTML", command=generar_html, font=("Arial", 12), padx=20, pady=10)
     boton_generar_html.pack(pady=10)
+
 
 
 
@@ -189,17 +188,33 @@ def mostrar_ventana_errores(palabras_procesadas, errores):
     boton_generar_html.pack(pady=10)
 
 
-def generar_html_y_cerrar_ventana(ventana, nombre_archivo, palabras_procesadas, errores, nombre_archivo2):
+def generar_html_y_cerrar_ventana(ventana, nombre_archivo, palabras_procesadas, errores, nombre_archivo2, caja_texto2):
     try:
-        # No sobrescribimos los nombres de los archivos
+        # Llamar a la función crear_html con el nombre de archivo nombre_archivo2
         crear_html(nombre_archivo2)
+        
+        # Capturar el contenido generado por crear_html
+        with open(nombre_archivo2, "r", encoding="utf-8") as archivo_html:
+            contenido_html = archivo_html.read()
+        
+        # Insertar el contenido en la caja de texto 2
+        caja_texto2.delete("1.0", tk.END)  # Limpiar la caja de texto 2
+        caja_texto2.insert(tk.END, contenido_html)
+        
+        # Generar HTML con tablas sin errores
         generar_html_tablas_sin_errores(palabras_procesadas, errores, nombre_archivo)
+        
+        # Abrir archivos en el navegador
         webbrowser.open_new_tab(nombre_archivo)
-        webbrowser.open_new_tab(nombre_archivo2)  
+        webbrowser.open_new_tab(nombre_archivo2)
+        
+        # Cerrar la ventana
         ventana.destroy()
+        
         print(f"Se ha generado el archivo HTML '{nombre_archivo}' correctamente.")
     except Exception as e:
         print(f"No se pudo generar el archivo HTML: {e}")
+
 
 
 def generar_html_tablas_cerrar_ventana(palabras_procesadas, errores, nombre_archivo, ventana):
@@ -211,3 +226,5 @@ def generar_html_tablas_cerrar_ventana(palabras_procesadas, errores, nombre_arch
 
 if __name__ == "__main__":
     main()
+
+
