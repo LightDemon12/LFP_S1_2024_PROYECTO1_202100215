@@ -1,8 +1,8 @@
-Inicio:{
+Inic||io:{
     Encabezado:{
         TituloPagina:"Ejemplo titulo";
     },
-    Cuerpo:[
+Cuerpo:[
         Texto:{
             fuente:"Arial";
             color:"azul";
@@ -120,6 +120,9 @@ Inicio:{
         }
     ]
 }
+
+
+
 
 
 

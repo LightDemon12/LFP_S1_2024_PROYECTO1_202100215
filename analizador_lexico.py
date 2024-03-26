@@ -109,6 +109,7 @@ def buscar_palabras_clave(palabras_procesadas, errores):
 
 
 
+
 def generar_html_tablas(palabras_procesadas, errores, archivo_salida):
     with open(archivo_salida, 'w', encoding='utf-8') as f:
         f.write('<html>\n')
@@ -121,16 +122,20 @@ def generar_html_tablas(palabras_procesadas, errores, archivo_salida):
         f.write('</head>\n')
         f.write('<body>\n')
 
-        # Tabla de palabras procesadas
-        f.write('<h2>Palabras Procesadas</h2>\n')
+        # Tabla de palabras procesadas y caracteres especiales
+        f.write('<h2>Palabras Procesadas y Caracteres Especiales</h2>\n')
         f.write('<table>\n')
         f.write('<tr><th>TOKEN</th><th>TIPO</th><th>LÍNEA</th><th>COLUMNA</th></tr>\n')
         for palabra in palabras_procesadas:
-            if palabra[1] != 'CARACTER_ESPECIAL':  # Filtrar caracteres especiales
-                # Escapar caracteres especiales HTML antes de escribirlos en el archivo
-                token = html.escape(palabra[0])
-                tipo = html.escape(palabra[1])
-                f.write(f'<tr><td>{token}</td><td>{tipo}</td><td>{palabra[2]}</td><td>{palabra[3]}</td></tr>\n')
+            # Escapar caracteres especiales HTML antes de escribirlos en el archivo
+            token = html.escape(palabra[0])
+            tipo = html.escape(palabra[1])
+            f.write(f'<tr><td>{token}</td><td>{tipo}</td><td>{palabra[2]}</td><td>{palabra[3]}</td></tr>\n')
+        
+        # Incluir caracteres especiales en la tabla
+        for caracter in caracteres:
+            f.write(f'<tr><td>{html.escape(caracter)}</td><td>CARACTER_ESPECIAL</td><td>-</td><td>-</td></tr>\n')
+
         f.write('</table>\n')
 
         # Tabla de errores
@@ -145,6 +150,7 @@ def generar_html_tablas(palabras_procesadas, errores, archivo_salida):
         f.write('</html>\n')
 
 
+
 def generar_html_tablas_sin_errores(palabras_procesadas, errores, archivo_salida):
     with open(archivo_salida, 'w', encoding='utf-8') as f:
         f.write('<html>\n')
@@ -157,17 +163,24 @@ def generar_html_tablas_sin_errores(palabras_procesadas, errores, archivo_salida
         f.write('</head>\n')
         f.write('<body>\n')
 
-        # Tabla de palabras procesadas
-        f.write('<h2>Palabras Procesadas</h2>\n')
+        # Tabla de palabras procesadas y caracteres especiales
+        f.write('<h2>Palabras Procesadas y Caracteres Especiales</h2>\n')
         f.write('<table>\n')
         f.write('<tr><th>TOKEN</th><th>TIPO</th><th>LÍNEA</th><th>COLUMNA</th></tr>\n')
         for palabra in palabras_procesadas:
-            if palabra[1] != 'CARACTER_ESPECIAL':  # Filtrar caracteres especiales
-                # Escapar caracteres especiales HTML antes de escribirlos en el archivo
-                token = html.escape(palabra[0])
-                tipo = html.escape(palabra[1])
-                f.write(f'<tr><td>{token}</td><td>{tipo}</td><td>{palabra[2]}</td><td>{palabra[3]}</td></tr>\n')
+            # Escapar caracteres especiales HTML antes de escribirlos en el archivo
+            token = html.escape(palabra[0])
+            tipo = html.escape(palabra[1])
+            f.write(f'<tr><td>{token}</td><td>{tipo}</td><td>{palabra[2]}</td><td>{palabra[3]}</td></tr>\n')
         f.write('</table>\n')
+
+        # Incluir caracteres especiales en la tabla
+        for caracter in caracteres:
+            f.write(f'<p>{html.escape(caracter)}</p>\n')
+
+        f.write('</body>\n')
+        f.write('</html>\n')
+
 
 def limpiar_listas_secundarias():
     global caracteres, palabras_procesadas, errores
