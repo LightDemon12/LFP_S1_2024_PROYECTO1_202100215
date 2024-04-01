@@ -96,11 +96,12 @@ class Tabla:
 
     def __str__(self):
         # Código para representar una tabla en HTML
-        return f'<td>|{self.filas} {self.columnas} {self.elementos}|</td>'
+        return f'<td>|{self.elementos}|</td>'
 
 
 Estructura = []
 EncabezadoTitulo = []
+Elementon = []
 # Diccionario para mapear las instrucciones de posición a HTML
 instrucciones_posicion_html = {
     "izquierda": "left",
@@ -467,6 +468,7 @@ def leer_documento(ruta_archivo):
 
 
 
+
 def crear_html(nombre_archivo2):
     try:
         with open(nombre_archivo2, "w", encoding="utf-8") as archivo:
@@ -500,10 +502,14 @@ def crear_html(nombre_archivo2):
 
 
 
+
+
+
 def limpiar_listas():
     global Estructura, EncabezadoTitulo
     Estructura.clear()
     EncabezadoTitulo.clear()
+    Elementon.clear()
 
 
 
