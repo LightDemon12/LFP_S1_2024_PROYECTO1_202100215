@@ -189,4 +189,3 @@ def generar_html_tablas_cerrar_ventana(palabras_procesadas, errores, nombre_arch
 if __name__ == "__main__":
     main()
 
-

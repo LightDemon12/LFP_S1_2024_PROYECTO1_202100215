@@ -2,7 +2,7 @@ from Logica.Estructuras import Encabezado, Titulo, Fondo, Parrafo, Texto, Codigo
 
 Estructura = []
 EncabezadoTitulo = []
-lista_elementos = []
+Elementon = []
 # Diccionario para mapear las instrucciones de posición a HTML
 instrucciones_posicion_html = {
     "izquierda": "left",
@@ -237,7 +237,8 @@ def procesar_bloque_salto(bloque):
     # Agregar el nuevo salto a la lista Estructura
     Estructura.append(nuevo_salto)
     
-def procesar_bloque_elemento(bloque, lista_elementos):
+def procesar_bloque_elemento(bloque, Estructura):
+
     print(bloque)
     
     # Copiar el bloque de texto a una variable de cadena (str)
@@ -248,33 +249,29 @@ def procesar_bloque_elemento(bloque, lista_elementos):
     
     # Eliminar las comillas dobles y cualquier texto innecesario
     bloque_str = bloque_str.replace('"', '').replace('fila:', '').replace('columna:', '').strip()
+    
+
+    
     # Dividir el bloque en líneas individuales
     lineas = bloque_str.split("\n")
-    
-    # Crear una tabla vacía
-    tabla = {}
-    
+
     for i, linea in enumerate(lineas):
+
         # Si es la primera línea, convertir a entero y asignar a fila
-        if i % 3 == 0:
+        if i == 0:
             fila = int(linea)
         # Si es la segunda línea, convertir a entero y asignar a columna
-        elif i % 3 == 1:
+        elif i == 1:
             columna = int(linea)
         # Si es la tercera línea, asignar como está a elemento
-        elif i % 3 == 2:
+        elif i == 2:
             elemento = linea
             
-            # Agregar el elemento a la tabla
-            if fila not in tabla:
-                tabla[fila] = {}
-            tabla[fila][columna] = elemento
-    
-    # Crear un objeto de la clase Tabla con la información obtenida
-    nuevo_elementon = Tabla(len(tabla), max(len(row) for row in tabla.values()), [tabla[fila][columna] for fila in sorted(tabla) for columna in sorted(tabla[fila])])
-    
-    # Agregar el objeto de Tabla a la lista lista_elementos
-    lista_elementos.append(nuevo_elementon)
+            # Crear un objeto de la clase Tabla con la información obtenida
+            nueva_tabla = Tabla(fila, columna, elemento)
+            
+            # Agregar el objeto de Tabla a la lista Estructura
+            Estructura.append(nueva_tabla)
     
     return lineas
 
@@ -339,16 +336,24 @@ def leer_documento(ruta_archivo):
                 elif palabra_clave == "Salto":
                     procesar_bloque_salto(bloque)
                 elif palabra_clave == "elemento":
-                    procesar_bloque_elemento(bloque, lista_elementos)
+                    procesar_bloque_elemento(bloque, Estructura)
             # Imprimir los elementos de la estructura después de procesar todos los bloques
             for elemento in Estructura:
                 print(elemento)
             for elemento in EncabezadoTitulo:
                 print(elemento)
-            for elemento in lista_elementos:
-                print(elemento)
     except FileNotFoundError:
         print("El archivo no pudo ser encontrado.")
+
+
+
+
+
+
+
+
+
+
 
 def crear_html(nombre_archivo2):
     try:
@@ -381,23 +386,16 @@ def crear_html(nombre_archivo2):
     except Exception as e:
         print(f"No se pudo crear el archivo HTML: {e}")
 
+
+
+
+
+
 def limpiar_listas():
     global Estructura, EncabezadoTitulo
     Estructura.clear()
     EncabezadoTitulo.clear()
-    lista_elementos.clear()
-
-
-
-
-
-
-
-
-
-
-
-
+    Elementon.clear()
 
 
 

@@ -102,24 +102,9 @@ class Tabla:
         self.columnas = columnas
         self.elementos = elementos
         self.instruccion = "tabla"
-        self.html = self.generar_tabla_html_string()
-
-    def generar_tabla_html_string(self):
-        html = "<table>\n"
-        for i in range(self.filas):
-            html += "  <tr>\n"
-            for j in range(self.columnas):
-                index = i * self.columnas + j
-                if index < len(self.elementos):
-                    html += f"    <td>{self.elementos[index]}</td>\n"
-            html += "  </tr>\n"
-        html += "</table>"
-        return html
 
     def __str__(self):
-        return self.html
-
-
+        return f'<table style="border: 1px solid black;"><tr><td>|{self.elementos}|</td></tr></table>'
 
 class Token:
     def __init__(self, valor, tipo, linea, columna):
