@@ -32,12 +32,13 @@ class Parrafo:
         return f'<p align="{self.posicion}">{self.texto}</p>'
 
 class Texto:
-    def __init__(self, fuente, color, tamaño):
+    def __init__(self, fuente, color, tamaño, texto):
         self.fuente = fuente
         self.color = color
         self.tamaño = tamaño
+        self.texto = texto
         self.instruccion = "texto"
-        self.texto = "Lorem ipsum dolor sit amet"
+
     def __str__(self):
         return f'<span style="font-family: {self.fuente}; color: {self.color}; font-size: {self.tamaño}px;">{self.texto}</span>'
 
@@ -47,14 +48,14 @@ class Codigo:
         self.posicion = posicion
         self.instruccion = "codigo"
     def __str__(self):
-        return f'<div style="text-align: {self.posicion}; font-family: monospace;">{self.texto}</div>'
+        return f'<pre style="text-align: {self.posicion}; font-family: monospace;">{self.texto}</pre>'
 
 class Negrita:
     def __init__(self, texto):
         self.texto = texto
         self.instruccion = "negrita"
     def __str__(self):
-        return f'<b>{self.texto}</b><br>'
+        return f'<strong>{self.texto}</strong><br>'
 
 class Subrayado:
     def __init__(self, texto):
@@ -68,14 +69,14 @@ class Tachado:
         self.texto = texto
         self.instruccion = "tachado"
     def __str__(self):
-        return f'<s>{self.texto}</s><br>'
+        return f'<del>{self.texto}</del><br>'
 
 class Cursiva:
     def __init__(self, texto):
         self.texto = texto
         self.instruccion = "cursiva"
     def __str__(self):
-        return f'<i>{self.texto}</i><br>'
+        return f'<em>{self.texto}</em><br>'
 
 class Salto:
     def __init__(self, cantidad):
@@ -93,10 +94,31 @@ class Tabla:
         self.columnas = columnas
         self.elementos = elementos
         self.instruccion = "tabla"
+        self.html = self.generar_tabla_html_string()
+
+class Tabla:
+    def __init__(self, filas, columnas, elementos):
+        self.filas = filas
+        self.columnas = columnas
+        self.elementos = elementos
+        self.instruccion = "tabla"
+        self.html = self.generar_tabla_html_string()
+
+    def generar_tabla_html_string(self):
+        html = "<table>\n"
+        for i in range(self.filas):
+            html += "  <tr>\n"
+            for j in range(self.columnas):
+                index = i * self.columnas + j
+                if index < len(self.elementos):
+                    html += f"    <td>{self.elementos[index]}</td>\n"
+            html += "  </tr>\n"
+        html += "</table>"
+        return html
 
     def __str__(self):
-        # Código para representar una tabla en HTML
-        return f'<td>|{self.elementos}|</td>'
+        return self.html
+
 
 
 class Token:

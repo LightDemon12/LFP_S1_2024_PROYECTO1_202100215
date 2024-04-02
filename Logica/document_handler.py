@@ -1,8 +1,5 @@
 import tkinter as tk
 from tkinter import filedialog
-
-
-
 def abrir_documento():
     root = tk.Tk()
     root.withdraw()  # Ocultar la ventana principal de Tkinter
@@ -15,9 +12,3 @@ def abrir_documento():
     else:
         print("No se seleccionó ningún documento.")
         return None
-
-
-
-
-
-
