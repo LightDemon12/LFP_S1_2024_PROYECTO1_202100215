@@ -1,10 +1,10 @@
 import tkinter as tk
 from tkinter import filedialog
-from interfaz import InterfazHTML
+from Interfaz.interfaz import InterfazHTML
 import tkinter.messagebox as messagebox
-from document_handler import abrir_documento
-from analizador_lexico import leer_archivo, generar_html_tablas, buscar_palabras_clave, generar_html_tablas_sin_errores, limpiar_listas_secundarias
-from lector import leer_documento, crear_html, limpiar_listas
+from Logica.document_handler import abrir_documento
+from Logica.analizador_lexico import  generar_html_tablas,  generar_html_tablas_sin_errores, limpiar_listas_secundarias,buscar_palabras_clave,leer_archivo
+from Logica.lector import leer_documento, crear_html, limpiar_listas
 import webbrowser
 
 # Variable global para almacenar la ruta del documento
@@ -97,20 +97,20 @@ def boton_Traduccion(ventana, caja_texto, caja_texto2):
             # Limpiar la caja de texto
             caja_texto.delete(1.0, tk.END)
             # Insertar las palabras procesadas en la caja de texto
-            for palabra, tipo, linea, columna in palabras_procesadas:
-                caja_texto.insert(tk.END, f'TOKEN: {palabra}, TIPO: {tipo}, LÍNEA: {linea}, COLUMNA: {columna}\n')
+            for token in palabras_procesadas:
+                caja_texto.insert(tk.END, f'TOKEN: {token.valor}, TIPO: {token.tipo}, LÍNEA: {token.linea}, COLUMNA: {token.columna}\n')
             
             # Insertar los errores de palabras clave en la caja de texto
             if errores_palabras_clave:
                 caja_texto.insert(tk.END, "\nErrores de palabras clave:\n")
-                for palabra in errores_palabras_clave:
-                    caja_texto.insert(tk.END, f'PALABRA: {palabra}\n')
+                for error in errores_palabras_clave:
+                    caja_texto.insert(tk.END, f'PALABRA: {error.valor}\n')
             
             # Insertar las palabras clasificadas como errores en la caja de texto al final
             if errores:
                 caja_texto.insert(tk.END, "\nPalabras clasificadas como errores:\n")
-                for palabra, tipo, linea, columna in errores:
-                    caja_texto.insert(tk.END, f'TOKEN: {palabra}, TIPO: {tipo}, LÍNEA: {linea}, COLUMNA: {columna}\n')
+                for error in errores:
+                    caja_texto.insert(tk.END, f'TOKEN: {error.valor}, TIPO: {error.tipo}, LÍNEA: {error.linea}, COLUMNA: {error.columna}\n')
                 # Mostrar ventana para generar HTML con tablas de errores
                 mostrar_ventana_errores(palabras_procesadas, errores)
             else:

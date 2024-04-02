@@ -1,5 +1,6 @@
 
 import html
+from Logica.Estructuras import Token, Reservada, Instruccion, Numero, Palabra, CaracterEspecial, Error
 caracteres = []
 def clasificar_palabra(palabra, linea_actual, columna_actual):
     caracteres_especiales = ['{', '}', ':', '"', ',', ';', '[', ']','=','.', '#']
@@ -36,9 +37,12 @@ def clasificar_palabra(palabra, linea_actual, columna_actual):
     return caracteres, tipo_palabra, linea_palabra, columna_palabra
 palabras_procesadas = []
 errores = []
+
 def leer_archivo(ruta_archivo):
     palabras_reservadas = ["Inicio", "Encabezado", "Cuerpo", "Titulo", "Fondo", "Parrafo", "Texto", "Codigo", "Negrita", "Subrayado", "Tachado", "Cursiva", "Salto", "Tabla"]
     instrucciones = ["TituloPagina", "texto", "posicion", "tamaño", "color", "cantidad", "elemento", "filas", "columnas"]
+    palabras_procesadas = []
+    errores = []
     
     try:
         with open(ruta_archivo, 'r', encoding='utf-8') as file:
@@ -54,41 +58,41 @@ def leer_archivo(ruta_archivo):
                 elif caracter in ['{', '}', ':', '"', ',', ';', '[', ']', '=', '.', '#']:
                     if palabra_actual:
                         if palabra_actual in palabras_reservadas:
-                            palabras_procesadas.append((palabra_actual, 'RESERVADA', linea_actual, columna_actual - len(palabra_actual)))
+                            palabras_procesadas.append(Reservada(palabra_actual, linea_actual, columna_actual - len(palabra_actual)))
                         elif palabra_actual in instrucciones:
-                            palabras_procesadas.append((palabra_actual, 'INSTRUCCION', linea_actual, columna_actual - len(palabra_actual)))
+                            palabras_procesadas.append(Instruccion(palabra_actual, linea_actual, columna_actual - len(palabra_actual)))
                         elif palabra_actual.isdigit():
-                            palabras_procesadas.append((palabra_actual, 'NUMERO', linea_actual, columna_actual - len(palabra_actual)))
+                            palabras_procesadas.append(Numero(palabra_actual, linea_actual, columna_actual - len(palabra_actual)))
                         else:
-                            palabras_procesadas.append((palabra_actual, 'PALABRA', linea_actual, columna_actual - len(palabra_actual)))
+                            palabras_procesadas.append(Palabra(palabra_actual, linea_actual, columna_actual - len(palabra_actual)))
                         palabra_actual = ''
-                    palabras_procesadas.append((caracter, 'CARACTER_ESPECIAL', linea_actual, columna_actual))
+                    palabras_procesadas.append(CaracterEspecial(caracter, linea_actual, columna_actual))
                 elif caracter.isalnum():
                     palabra_actual += caracter
                 elif caracter.isspace():
                     if palabra_actual:
                         if palabra_actual in palabras_reservadas:
-                            palabras_procesadas.append((palabra_actual, 'RESERVADA', linea_actual, columna_actual - len(palabra_actual)))
+                            palabras_procesadas.append(Reservada(palabra_actual, linea_actual, columna_actual - len(palabra_actual)))
                         elif palabra_actual in instrucciones:
-                            palabras_procesadas.append((palabra_actual, 'INSTRUCCION', linea_actual, columna_actual - len(palabra_actual)))
+                            palabras_procesadas.append(Instruccion(palabra_actual, linea_actual, columna_actual - len(palabra_actual)))
                         elif palabra_actual.isdigit():
-                            palabras_procesadas.append((palabra_actual, 'NUMERO', linea_actual, columna_actual - len(palabra_actual)))
+                            palabras_procesadas.append(Numero(palabra_actual, linea_actual, columna_actual - len(palabra_actual)))
                         else:
-                            palabras_procesadas.append((palabra_actual, 'PALABRA', linea_actual, columna_actual - len(palabra_actual)))
+                            palabras_procesadas.append(Palabra(palabra_actual, linea_actual, columna_actual - len(palabra_actual)))
                         palabra_actual = ''
                 else:
-                    errores.append((caracter, 'ERROR', linea_actual, columna_actual))
+                    errores.append(Error(caracter, 'TIPO_DE_ERROR', linea_actual, columna_actual))
                 columna_actual += 1
             
             if palabra_actual:
                 if palabra_actual in palabras_reservadas:
-                    palabras_procesadas.append((palabra_actual, 'RESERVADA', linea_actual, columna_actual - len(palabra_actual)))
+                    palabras_procesadas.append(Reservada(palabra_actual, linea_actual, columna_actual - len(palabra_actual)))
                 elif palabra_actual in instrucciones:
-                    palabras_procesadas.append((palabra_actual, 'INSTRUCCION', linea_actual, columna_actual - len(palabra_actual)))
+                    palabras_procesadas.append(Instruccion(palabra_actual, linea_actual, columna_actual - len(palabra_actual)))
                 elif palabra_actual.isdigit():
-                    palabras_procesadas.append((palabra_actual, 'NUMERO', linea_actual, columna_actual - len(palabra_actual)))
+                    palabras_procesadas.append(Numero(palabra_actual, linea_actual, columna_actual - len(palabra_actual)))
                 else:
-                    palabras_procesadas.append((palabra_actual, 'PALABRA', linea_actual, columna_actual - len(palabra_actual)))
+                    palabras_procesadas.append(Palabra(palabra_actual, linea_actual, columna_actual - len(palabra_actual)))
                 
             return palabras_procesadas, errores
     except FileNotFoundError:
@@ -100,13 +104,12 @@ def buscar_palabras_clave(palabras_procesadas, errores):
     
     for palabra_clave in palabras_clave:
         encontrada = False
-        for palabra, _, _, _ in palabras_procesadas:
-            if palabra == palabra_clave:
+        for token in palabras_procesadas:
+            if token.valor == palabra_clave:
                 encontrada = True
                 break
         if not encontrada:
-            errores.append((palabra_clave, 'ERROR', 'NO EXISTE', 'NO EXISTE'))
-
+            errores.append(Error(palabra_clave, 'NO ENCONTRADO', "NO EXISTE", "NO EXISTE"))
 
 
 
@@ -128,9 +131,9 @@ def generar_html_tablas(palabras_procesadas, errores, archivo_salida):
         f.write('<tr><th>TOKEN</th><th>TIPO</th><th>LÍNEA</th><th>COLUMNA</th></tr>\n')
         for palabra in palabras_procesadas:
             # Escapar caracteres especiales HTML antes de escribirlos en el archivo
-            token = html.escape(palabra[0])
-            tipo = html.escape(palabra[1])
-            f.write(f'<tr><td>{token}</td><td>{tipo}</td><td>{palabra[2]}</td><td>{palabra[3]}</td></tr>\n')
+            token = html.escape(palabra.valor)
+            tipo = html.escape(palabra.tipo)
+            f.write(f'<tr><td>{token}</td><td>{tipo}</td><td>{palabra.linea}</td><td>{palabra.columna}</td></tr>\n')
         
         # Incluir caracteres especiales en la tabla
         for caracter in caracteres:
@@ -143,9 +146,8 @@ def generar_html_tablas(palabras_procesadas, errores, archivo_salida):
         f.write('<table>\n')
         f.write('<tr><th>CARACTER</th><th>TIPO</th><th>LÍNEA</th><th>COLUMNA</th></tr>\n')
         for error in errores:
-            f.write(f'<tr><td>{error[0]}</td><td>{error[1]}</td><td>{error[2]}</td><td>{error[3]}</td></tr>\n')
+            f.write(f'<tr><td>{error.valor}</td><td>{error.tipo}</td><td>{error.linea}</td><td>{error.columna}</td></tr>\n')
         f.write('</table>\n')
-
         f.write('</body>\n')
         f.write('</html>\n')
 
@@ -169,9 +171,9 @@ def generar_html_tablas_sin_errores(palabras_procesadas, errores, archivo_salida
         f.write('<tr><th>TOKEN</th><th>TIPO</th><th>LÍNEA</th><th>COLUMNA</th></tr>\n')
         for palabra in palabras_procesadas:
             # Escapar caracteres especiales HTML antes de escribirlos en el archivo
-            token = html.escape(palabra[0])
-            tipo = html.escape(palabra[1])
-            f.write(f'<tr><td>{token}</td><td>{tipo}</td><td>{palabra[2]}</td><td>{palabra[3]}</td></tr>\n')
+            token = html.escape(palabra.valor)
+            tipo = html.escape(palabra.tipo)
+            f.write(f'<tr><td>{token}</td><td>{tipo}</td><td>{palabra.linea}</td><td>{palabra.columna}</td></tr>\n')
         f.write('</table>\n')
 
         # Incluir caracteres especiales en la tabla
@@ -187,6 +189,21 @@ def limpiar_listas_secundarias():
     caracteres.clear()
     palabras_procesadas.clear()
     errores.clear()
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
